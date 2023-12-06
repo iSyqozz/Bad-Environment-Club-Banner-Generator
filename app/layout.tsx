@@ -1,13 +1,10 @@
-import type { Metadata, ResolvingMetadata, ResolvedMetadata } from 'next'
-import { Ubuntu } from 'next/font/google'
+import type { Metadata } from 'next'
 import '@/styles/globals.css'
-import Navbar from '@/components/shared/Navbar';
-import Footer from '@/components/shared/Footer';
-import SolanaProvider from '@/providers/SolanaProvider';
-import NextAuthProvider from '@/providers/NextAuthProvider';
-import ScrollProg from '@/components/shared/ScrollProg';
-import Favicon from '@/components/shared/Favicon';
-import CookieConsentBanner from '@/components/shared/CookieConsent';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import ScrollProg from '@/components/ScrollProg';
+import ScrollUp from '@/components/ScrollUp';
+import { Poppins, Orbitron } from 'next/font/google';
 import {
   PROJECT_BASE_TITLE,
   PROJECT_DESCRIPTION,
@@ -19,22 +16,13 @@ import {
   PROJECT_TWITTER_HANDLE,
 } from '@/constants'
 import { Viewport } from 'next'
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 //for vercel deployments
 const baseUrl = process.env.NODE_ENV === 'development'
   ? `http://localhost:${process.env.PORT || 3000}` :
   'https://' + process.env.VERCEL_URL as string;
 
-type generateMetadatProps = {
-  params: { id: string }
-  searchParams: { [key: string]: string | string[] | undefined }
-}
-
 export function generateMetadata(
-  { params, searchParams }: generateMetadatProps,
-  parent: ResolvedMetadata,
 ): Metadata {
 
   const metadata: Metadata = {
@@ -45,16 +33,9 @@ export function generateMetadata(
     },
     description: PROJECT_DESCRIPTION,
     abstract: PROJECT_DESCRIPTION,
-    icons: {
-      icon: '/meta/favicon.ico',
-      apple: '/meta/favicon.ico',
-    },
-    classification: 'Solana Dapp',
-    metadataBase: new URL(baseUrl),
+    classification: 'art generator',
     robots: { index: true, follow: true },
-    bookmarks: baseUrl,
     keywords: [
-      'Solana Dapp',
       'Web3 Application',
       'Cryptocurrency',
       'Solana Blockchain',
@@ -80,7 +61,6 @@ export function generateMetadata(
       },
     ],
     openGraph: {
-      images: '/meta/opengraph-image.png',
       type: 'website',
       title: PROJECT_BASE_TITLE,
       description: PROJECT_DESCRIPTION,
@@ -90,7 +70,6 @@ export function generateMetadata(
       locale: 'en_US',
     },
     twitter: {
-      images: '/meta/twitter-image.png',
       title: PROJECT_BASE_TITLE,
       description: PROJECT_DESCRIPTION,
       card: 'summary_large_image',
@@ -106,12 +85,6 @@ export function generateMetadata(
       title: PROJECT_BASE_TITLE,
       capable: true,
     },
-    appLinks: {
-      web: {
-        url: baseUrl,
-        should_fallback: true,
-      }
-    }
   }
 
   return metadata
@@ -127,7 +100,11 @@ export const viewport: Viewport = {
   colorScheme: 'dark',
 }
 
-const ubuntu = Ubuntu({ subsets: ['latin'], weight: ['300', '400', '500', '700'] })
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '700', '800', '900'],
+  adjustFontFallback:true,
+})
 export default function RootLayout({
   children,
 }: {
@@ -140,17 +117,21 @@ export default function RootLayout({
         <meta name="format-detection" content="telephone=yes, date=yes, address=yes, email=yes, url=yes" />
         <link rel="shortlink" href={baseUrl} />
       </head>
-      <body className={ubuntu.className}>
-        <SolanaProvider>
-          <NextAuthProvider>
-            <ScrollProg></ScrollProg>
-            <Favicon></Favicon>
-            <Navbar></Navbar>
-            {children}
-            <Footer></Footer>
-            <CookieConsentBanner/>
-          </NextAuthProvider>
-        </SolanaProvider>
+      <body className={poppins.className + " !scroll-smooth !uppercase bg-black"}>
+
+
+        <div className='-z-[5] fixed top-0 left-0 w-full h-full overflow-hidden'>
+          <video src='/assets/space.mp4' muted autoPlay loop playsInline className='w-full h-full object-cover -z-5'></video>
+        </div>
+
+
+
+
+        <ScrollProg></ScrollProg>
+        <ScrollUp />
+        <Navbar></Navbar>
+        {children}
+        <Footer></Footer>
       </body>
     </html>
   )

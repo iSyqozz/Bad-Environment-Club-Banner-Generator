@@ -10,12 +10,6 @@
   },
   "dependencies": {
     "@metaplex-foundation/js": "^0.19.5",
-    "@solana/spl-token": "^0.3.8",
-    "@solana/wallet-adapter-base": "^0.9.23",
-    "@solana/wallet-adapter-react": "^0.15.35",
-    "@solana/wallet-adapter-react-ui": "^0.9.34",
-    "@solana/wallet-adapter-wallets": "^0.19.23",
-    "@solana/web3.js": "^1.87.3",
     "bn": "^1.0.5",
     "bs58": "^5.0.0",
     "encoding": "^0.1.13",
