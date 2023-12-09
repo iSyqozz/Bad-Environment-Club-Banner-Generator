@@ -308,7 +308,7 @@ const BannerGenerator = ({ shouldDim, setShouldDim }) => {
             {/**hidden banner for html2canvas */}
             <div
                 style={{ background: topLeftPixelColor, }}
-                className='hidden-banner relative rounded-xl !w-[1500px] min-w-[1500px] max-w-[1500px] !h-[500px] min-h-[500px] max-h-[500px] overflow-hidden '>
+                className='hidden-banner hidden relative rounded-xl !w-[1500px] min-w-[1500px] max-w-[1500px] !h-[500px] min-h-[500px] max-h-[500px] overflow-hidden '>
                 {/**banner text */}
                 <div style={{ fontSize: `var(--complementary-real-font-size)`, lineHeight: `calc(var(--complementary-real-font-size)*1)` }} className={'text-black z-[2] max-w-[60%] break-words absolute translate-y-[-50%] top-[50%]  left-[50%] translate-x-[-50%] text-center  font-bold [text-shadow:none] ' + duncap.className}>{BannerText === '' ? ('Your Text Here') : (BannerText)}</div>
 
