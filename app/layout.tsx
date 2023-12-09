@@ -5,6 +5,8 @@ import Footer from '@/components/Footer';
 import ScrollProg from '@/components/ScrollProg';
 import ScrollUp from '@/components/ScrollUp';
 import { Poppins, Orbitron } from 'next/font/google';
+import { ParticlesBg } from '@/components/ParticlesBg';
+
 import {
   PROJECT_BASE_TITLE,
   PROJECT_DESCRIPTION,
@@ -103,7 +105,7 @@ export const viewport: Viewport = {
 const poppins = Poppins({
   subsets: ['latin'],
   weight: ['300', '400', '500', '700', '800', '900'],
-  adjustFontFallback:true,
+
 })
 export default function RootLayout({
   children,
@@ -117,14 +119,14 @@ export default function RootLayout({
         <meta name="format-detection" content="telephone=yes, date=yes, address=yes, email=yes, url=yes" />
         <link rel="shortlink" href={baseUrl} />
       </head>
-      <body className={poppins.className + " !scroll-smooth !uppercase bg-black"}>
+      <body className={poppins.className + "!scroll-smooth !uppercase bg-black"}>
 
 
         <div className='-z-[5] fixed top-0 left-0 w-full h-full overflow-hidden'>
           <video src='/assets/space.mp4' muted autoPlay loop playsInline className='w-full h-full object-cover -z-5'></video>
         </div>
 
-
+        {/** <ParticlesBg/> */} 
 
 
         <ScrollProg></ScrollProg>

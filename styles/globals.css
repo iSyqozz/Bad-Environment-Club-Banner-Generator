@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --complementary-font-size: 0px
+  --complementary-real-font-size: 0px
+}
+
 body ,html {
   cursor: url('/icons/cursor.png'), auto ;
   position: relative;
@@ -9,6 +14,12 @@ body ,html {
   margin: 0;
   scroll-behavior: smooth;
   width: 100%;
+  overflow-x: hidden;
+}
+
+* {
+  transition: all 0.6s ease;
+  text-shadow: 0px 2px 6px black;
 }
 
 *::-webkit-scrollbar {
@@ -47,4 +58,23 @@ body ,html {
 
 .image-hover:hover {
   transform: scale(1.16) translate(var(--transition-x, 0), var(--transition-y, 0));
+}
+
+.text-slider::-webkit-slider-thumb{
+  -webkit-appearance: none;
+  width: 25px;
+  height: 20px;
+  border-radius: 20%;
+  background-color: black;;
+  transition: all 0.2s ease-in-out;
+
+}
+
+.text-slider::-webkit-slider-thumb:hover{
+  box-shadow: 0px 0px 10px 2px white;
+  transform: scale(1.25);
+}
+
+.text-slider::-webkit-slider-thumb:active{
+  transform: scale(1.15);
 }

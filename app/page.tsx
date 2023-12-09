@@ -1,36 +1,46 @@
 'use client'
 import { useState, useEffect } from "react"
+import BannerGenerator from "@/components/BannerGenerator";
+import WallpaperGenerator from "@/components/WallpaperGenerator";
+import ToolPicker from "@/components/ToolPicker";
+import BMpostGenerator from "@/components/BMpostGenerator";
+import SepBar from "@/components/SepBar";
+import Dim from "@/components/Dim";
 const Home = () => {
 
   const [ShouldShoud, setShouldShoud] = useState(false);
+  const [shouldDim, setshouldDim] = useState(false);
 
-
-  useEffect(()=>{
+  useEffect(() => {
     const timer = setTimeout(() => {
       setShouldShoud(true);
-    }, 200);
+    }, 300);
 
-    return ()=>{clearTimeout(timer)}
-  },[])
-  
-  
-  
+    return () => { clearTimeout(timer) }
+  }, [])
+
   return (
     <>
 
-    
       <div
-      style={{
-        transform: ShouldShoud?('scale-[0.7]'):('1'),
-      }}
-      className=" transition-[transform] duration-300 w-[90%] max-w-6xl mx-auto flex items-center justify-start h-[200vh]">
+        style={{
+          transform: ShouldShoud ? ('Scale(1)') : ('Scale(0.6)'),
+        }}
+        className="relative  pt-12 duration-500 ease-in-out w-[90%] max-w-6xl mx-auto flex flex-col items-center justify-start gap-10 h-[200vh]">
 
-        <div id="tool-picker"></div>
-        <div id="banner-generator"></div>
-        <div id="wallpaper-generator"></div>
-        <div id="BMpost-generator"></div>
+        <ToolPicker />
+        <SepBar width={40} />
+        <BannerGenerator shouldDim={shouldDim} setShouldDim={setshouldDim} />
+
+        <SepBar width={40} />
+        <WallpaperGenerator />
+        <SepBar width={40} />
+
+        <BMpostGenerator />
 
       </div>
+
+      {shouldDim && <Dim></Dim>}
     </>
   )
 }
