@@ -29,7 +29,7 @@ const BannerGenerator = ({ shouldDim, setShouldDim }) => {
     function captureAndSaveBanner() {
         const hiddenBanner = document.querySelector('.hidden-banner') as HTMLDivElement; // Replace with the actual class or ID of your hidden banner container
         hiddenBanner.style.display = 'flex';
-        //window.scrollTo(0, 0);
+        window.scrollTo(0, 0);
         document.body.style.overflowY = 'hidden'
         
         if (hiddenBanner) {
