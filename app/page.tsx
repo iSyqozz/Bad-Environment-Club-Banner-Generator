@@ -26,18 +26,17 @@ const Home = () => {
         style={{
           transform: ShouldShoud ? ('Scale(1)') : ('Scale(0.6)'),
         }}
-        className="relative  pt-12 duration-500 ease-in-out w-[90%] max-w-6xl mx-auto flex flex-col items-center justify-start gap-10 h-[200vh]">
+        className="relative  pt-12 duration-500 ease-in-out w-[90%] max-w-6xl mx-auto flex flex-col items-center justify-start gap-10">
 
         <ToolPicker />
         <SepBar width={40} />
         <BannerGenerator shouldDim={shouldDim} setShouldDim={setshouldDim} />
 
         <SepBar width={40} />
-        <WallpaperGenerator />
+        <WallpaperGenerator shouldDim={shouldDim} setShouldDim={setshouldDim} />
         <SepBar width={40} />
 
-        <BMpostGenerator />
-
+        <BMpostGenerator shouldDim={shouldDim} setShouldDim={setshouldDim} />
       </div>
 
       {shouldDim && <Dim></Dim>}

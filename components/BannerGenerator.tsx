@@ -26,32 +26,33 @@ const BannerGenerator = ({ shouldDim, setShouldDim }) => {
     const bannerRef = useRef<HTMLDivElement | null>(null);
 
 
+
+    //exporting and saving banner
     function captureAndSaveBanner() {
         const hiddenBanner = document.querySelector('.hidden-banner') as HTMLDivElement; // Replace with the actual class or ID of your hidden banner container
         hiddenBanner.style.display = 'flex';
         window.scrollTo(0, 0);
         document.body.style.overflowY = 'hidden'
-        
+
         if (hiddenBanner) {
-          html2canvas(hiddenBanner).then((canvas) => {
-            const image = canvas.toDataURL('image/png');
-            const downloadLink = document.createElement('a');
-            downloadLink.href = image;
-            downloadLink.download = 'banner.png';
-            downloadLink.click();
-        
-            hiddenBanner.style.display = 'none'
-            document.body.style.overflowY = 'auto'
-        
-            setShouldDim(false);
-          });
+            html2canvas(hiddenBanner).then((canvas) => {
+                const image = canvas.toDataURL('image/png');
+                const downloadLink = document.createElement('a');
+                downloadLink.href = image;
+                downloadLink.download = 'banner.png';
+                downloadLink.click();
+
+                hiddenBanner.style.display = 'none'
+                document.body.style.overflowY = 'auto'
+
+                setShouldDim(false);
+            });
         }
     }
 
 
 
-
-
+    //adjusting fonts
     const handlefontOptimization = useCallback(() => {
         // Function to calculate font size based on the state value
         const calculateFontSize = () => {
@@ -63,7 +64,6 @@ const BannerGenerator = ({ shouldDim, setShouldDim }) => {
 
             const fontSize = (bannerHeight! * parseFloat((fontSizeState / 100).toFixed(3)));
             const realfontSize = (realbannerHeight! * parseFloat((fontSizeState / 100).toFixed(3)));
-            console.log(fontSize)
             // Calculate the font size based on the state value and parent width
             //const fontSize =  (fontSizeState / 50) * (banenrHeight ?? 0);
             return [`${fontSize}px`, `${realfontSize}px`];
@@ -75,7 +75,6 @@ const BannerGenerator = ({ shouldDim, setShouldDim }) => {
 
     }, [fontSizeState])
 
-
     useEffect(() => {
         handlefontOptimization();
         window.addEventListener('resize', handlefontOptimization);
@@ -86,7 +85,7 @@ const BannerGenerator = ({ shouldDim, setShouldDim }) => {
 
 
 
-
+    //getting banner background color
     const getColorOfTopLeftPixel = () => {
         // Get the image element using the ref
         const img = imgRef.current;
@@ -118,10 +117,10 @@ const BannerGenerator = ({ shouldDim, setShouldDim }) => {
 
 
 
-    const [ShouldShoud, setShouldShoud] = useState(false);
+    const [ShouldShow, setShouldShow] = useState(false);
     useEffect(() => {
         const timer = setTimeout(() => {
-            setShouldShoud(true);
+            setShouldShow(true);
         }, 600);
 
         return () => { clearTimeout(timer) }
@@ -134,8 +133,8 @@ const BannerGenerator = ({ shouldDim, setShouldDim }) => {
             <div
                 id="banner-generator"
                 style={{
-                    opacity: ShouldShoud ? ('1') : ('0'),
-                    transform: ShouldShoud ? ('translateY(0px)') : ('translateY(50px')
+                    opacity: ShouldShow ? ('1') : ('0'),
+                    transform: ShouldShow ? ('translateY(0px)') : ('translateY(50px')
                 }}
                 className={'max-md:p-1  w-[max(65%,320px)]  aspect-[1.4/1] max-sm:aspect-[1/2] max-[950px]:aspect-[1/1.6] bg-secondary bg-opacity-60 rounded-3xl max-sm:rounded-xl flex flex-col items-center justify-start gap-2 '}>
 
@@ -146,9 +145,9 @@ const BannerGenerator = ({ shouldDim, setShouldDim }) => {
                 <div
                     ref={bannerRef}
                     style={{ background: topLeftPixelColor, }}
-                    className='relative rounded-xl w-[85%] aspect-[1500/500] overflow-hidden '>
+                    className='max-md:mt-auto  relative rounded-xl w-[85%] aspect-[1500/500] overflow-hidden '>
                     {/**banner text */}
-                    <div style={{ fontSize: `var(--complementary-font-size)`, lineHeight: `calc(var(--complementary-font-size)*1)`  }} className={'text-black z-[2] max-w-[60%] break-words absolute translate-y-[-50%] top-[50%]  left-[50%] max-sm:left-[45%] translate-x-[-50%] text-center  font-bold [text-shadow:none] ' + duncap.className}>{BannerText === '' ? ('Your Text Here') : (BannerText)}</div>
+                    <div style={{ fontSize: `var(--complementary-font-size)`, lineHeight: `calc(var(--complementary-font-size)*1)` }} className={'text-black z-[2] max-w-[60%] break-words absolute translate-y-[-50%] top-[50%]  left-[50%] max-sm:left-[45%] translate-x-[-50%] text-center  font-bold [text-shadow:none] ' + duncap.className}>{BannerText === '' ? ('Your Text Here') : (BannerText)}</div>
 
                     {/**nft image on the banner */}
                     {topLeftPixelColor == 'rgba(255, 229, 46, 1)' && (
@@ -159,7 +158,7 @@ const BannerGenerator = ({ shouldDim, setShouldDim }) => {
                             alt={ChoosenNFTnumber}
                             src={'/assets/bubble-top-layer.webp'}
                             className='aspect-auto absolute bottom-0 right-1 h-[105%] w-auto z-[2] '
-                        ></Image>)}
+                        />)}
                     <Image
                         onLoad={getColorOfTopLeftPixel}
                         ref={imgRef}
@@ -175,7 +174,7 @@ const BannerGenerator = ({ shouldDim, setShouldDim }) => {
                     {/** qr code section */}
                     {AddQRcode && (
                         <div className='max-sm:left-[45%] z-[3] absolute bottom-0 left-1/2 -translate-x-1/2 flex flex-col items-center justify-end h-full '>
-                            <div className='h-[20%] w-auto bg-black' style={{ background: topLeftPixelColor }}>
+                            <div className='h-[20%] w-auto'>
                                 <Image
                                     unoptimized
                                     width={150}
@@ -184,7 +183,7 @@ const BannerGenerator = ({ shouldDim, setShouldDim }) => {
                                     src={'/assets/Qr.png'}
                                     priority
                                     loading='eager'
-                                    className='h-[100%] w-auto z-[1] mix-blend-multiply'
+                                    className='h-[100%] w-auto z-[1]'
                                 ></Image>
                             </div>
                             <div className='text-black text-center [text-shadow:none] max-sm:text-[5px] text-[9px]'>{`Use code ${ReferralCode || '(your code)'} to get a 10% discount`}</div>
@@ -265,9 +264,9 @@ const BannerGenerator = ({ shouldDim, setShouldDim }) => {
 
                         {/** toggle include */}
                         <div className='flex items-center justify-center gap-1 max-sm:w-full w-[60%]'>
-                            <button className={' p-1 rounded-sm text-black font-bold text-center bg-green-500 transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer [text-shadow:none] text-[8px] w-[25%] max-sm:w-[50%] ' + (!AddQRcode ? ('opacity-100 ') : ('opacity-50'))}
+                            <button className={'p-1 rounded-sm text-black font-bold text-center bg-green-500 transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer [text-shadow:none] text-[8px] w-[25%] max-sm:w-[50%] ' + (!AddQRcode ? ('opacity-100 ') : ('opacity-50'))}
                                 onClick={() => { setAddQRcode(true) }}>INCLUDE</button>
-                            <button className={' p-1 rounded-sm text-black font-bold text-center bg-primary transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer [text-shadow:none] text-[8px] w-[25%] max-sm:w-[50%] ' + (AddQRcode ? ('opacity-100 ') : ('opacity-50'))}
+                            <button className={'p-1 rounded-sm text-black font-bold text-center bg-primary transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer [text-shadow:none] text-[8px] w-[25%] max-sm:w-[50%] ' + (AddQRcode ? ('opacity-100 ') : ('opacity-50'))}
                                 onClick={() => { setAddQRcode(false) }}>DONT INCLUDE</button>
                         </div>
 
@@ -276,7 +275,7 @@ const BannerGenerator = ({ shouldDim, setShouldDim }) => {
 
                 {/**qr code and referral input */}
                 <input
-                    className='bg-opacity-60 focus:bg-opacity-100 max-sm:w-[calc(75%+4px)] w-[calc(30%+4px)]  text-center font-extrabold bg-primary placeholder:text-black placeholder:text-opacity-70 text-[8px] rounded-sm [text-shadow:none] text-black p-1  '
+                    className='bg-opacity-60 focus:bg-opacity-100 max-sm:w-[calc(75%)] w-[calc(30%+4px)]  text-center font-extrabold bg-primary placeholder:text-black placeholder:text-opacity-70 text-[8px] rounded-sm [text-shadow:none] text-black p-1  '
                     type="text"
                     required
                     value={ReferralCode}
@@ -293,8 +292,9 @@ const BannerGenerator = ({ shouldDim, setShouldDim }) => {
                     onClick={() => {
                         setShouldDim(true); setTimeout(() => { captureAndSaveBanner() }, 10);
                     }}
-                    className='max-sm:w-[calc(75%+8px)] max-sm:mt-2 sm:my-6  w-[calc(50%+8px)] bg-black transition-all duration-300 hover:scale-105 active:scale-95 text-center font-light text-white text-lg rounded-sm p-2'>
-                    EXPORT AND SAVE</div>
+                    className='max-md:mb-auto max-sm:w-[calc(75%)] md:my-6  w-[calc(50%+8px)] bg-black transition-all duration-300 hover:scale-105 active:scale-95 text-center font-light text-white text-lg rounded-sm p-2'>
+                    EXPORT AND SAVE
+                </div>
             </div>
 
 

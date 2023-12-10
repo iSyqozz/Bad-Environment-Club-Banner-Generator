@@ -29,7 +29,6 @@ const ToolPicker = () => {
             <div className={'text-xl max-sm:text-sm text-white font-extrabold mt-4 ' + myFont.className}>create bad vibes</div>
             <div className=' sm:mt-4 lg:mt-6 grid  grid-cols-3 grid-rows-3 max-sm:grid-cols-4 max-sm:grid-rows-4 w-[85%] h-[75%] max-sm:h-[85%] gap-4'>
 
-
                 <a href="#banner-generator" className=' group transition-all border-[#7f6900] border duration-500 ease-in-out hover:scale-[1.05] active:scale-[1] cursor-pointer overflow-hidden [grid-column:1_/_span_2] max-sm:[grid-column:1_/_span_4] sm:[grid-row:1_/_span_1] rounded-lg bg-[#ffd400] relative' >
                     <div className='rounded-sm absolute  top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-[105%] h-[105%] bg-black group-hover:opacity-80 opacity-50 z-[5]'></div>
                     <div className='text-white z-[6] absolute opacity-70 group-hover:opacity-100 translate-y-[-50%] text-sm md:text-sm top-[50%]  left-[50%] translate-x-[-50%] text-center max-sm:text-[11px] font-bold'>banner tool</div>

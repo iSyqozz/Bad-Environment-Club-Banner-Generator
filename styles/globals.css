@@ -3,8 +3,12 @@
 @tailwind utilities;
 
 :root {
-  --complementary-font-size: 0px
-  --complementary-real-font-size: 0px
+  --complementary-font-size: 0px;
+  --complementary-real-font-size: 0px;
+  --complementary-wallpaper-font-size: 0px;
+  --complementary-wallpaper-real-font-size: 0px;
+  --complementary-bm-font-size: 0px;
+  --complementary-bm-real-font-size: 0px;
 }
 
 body ,html {
