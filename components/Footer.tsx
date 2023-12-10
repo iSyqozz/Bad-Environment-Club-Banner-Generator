@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 const Footer = () => {
   return (
-    <div className='z-5 w-full flex flex-col items-center justify-center gap-8'>
+    <div className='z-5 mt-16 w-full flex flex-col items-center justify-center gap-8'>
       <div className='flex flex-col items-center justify-center gap-2'>
         <div className='text-white font-normal text-opacity-70 text-[10px]'> powered by</div>
         <Link target='_blank' href={"https://www.earlyart.io/"}>
