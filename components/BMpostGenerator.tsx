@@ -6,7 +6,8 @@ import Image from 'next/image'
 import Dim from './Dim'
 import html2canvas from "html2canvas"
 const myFont = localFont({ src: "../public/fonts/Akira-Expanded.otf", })
-const duncap = localFont({ src: "../public/fonts/DunceCap-BB-Italic.ttf", })
+
+
 
 //@ts-ignore
 const BMpostGenerator = ({ shouldDim, setShouldDim }) => {
@@ -20,12 +21,17 @@ const BMpostGenerator = ({ shouldDim, setShouldDim }) => {
     const [FillColor, setFillColor] = useState<'#000000' | '#ffffff' | '#ffd400' | '#ff4f8f' | '#fff6ee'>('#000000');
 
 
+    const BmFillSource = `/assets/BmPosts/Bm${FillColor.substring(1)}.webp`;
+    console.log(BmFillSource);
+
     const imgRef = useRef<HTMLImageElement | null>(null);
     const bannerRef = useRef<HTMLDivElement | null>(null);
+    const LogoRef1 = useRef<HTMLImageElement | null>(null);
+    const LogoRef2 = useRef<HTMLImageElement | null>(null);
 
     //exporting and saving banner
     function captureAndSaveBanner() {
-        const hiddenBanner = document.querySelector('.hidden-banner2') as HTMLDivElement; // Replace with the actual class or ID of your hidden banner container
+        const hiddenBanner = document.querySelector('.hidden-banner3') as HTMLDivElement; // Replace with the actual class or ID of your hidden banner container
         hiddenBanner.style.display = 'flex';
         window.scrollTo(0, 0);
         document.body.style.overflowY = 'hidden'
@@ -45,6 +51,60 @@ const BMpostGenerator = ({ shouldDim, setShouldDim }) => {
             });
         }
     }
+
+
+    // Helper function to convert hex color to RGB
+    function hexToRgb(hex: string) {
+        // Remove the hash sign if it's included
+        hex = hex.replace(/^#/, '');
+
+        // Parse the hex values for red, green, and blue
+        var bigint = parseInt(hex, 16);
+        var r = (bigint >> 16) & 255;
+        var g = (bigint >> 8) & 255;
+        var b = bigint & 255;
+
+        return { r, g, b };
+    }
+
+
+
+    function paintImage(img: HTMLImageElement, newColor: '#000000' | '#ffffff' | '#ffd400' | '#ff4f8f' | '#fff6ee') {
+
+        let canvas = document.createElement('canvas');
+        canvas.width = 1000;
+        canvas.height = 1000;
+        // Get canvas 2D context
+        var ctx = canvas.getContext('2d')!;
+        // Draw the image on the canvas
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        // Get image data
+        var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        var data = imageData.data;
+        // Convert hex color to RGB
+        var rgb = hexToRgb(newColor);
+        console.log(rgb)
+        // Loop through each pixel and modify color
+        for (var i = 0; i < data.length; i += 4) {
+            if (data[i + 3] !== 0) {
+                // Set the new RGB values
+                data[i] = rgb.r;
+                data[i + 1] = rgb.g;
+                data[i + 2] = rgb.b;
+                // Alpha value remains unchanged (data[i + 3])
+            }
+        }
+        // Put the modified image data back on the canvas
+        ctx.putImageData(imageData, 0, 0);
+        // Replace the src attribute of the original image with the data URL of the modified image
+        img.src = canvas.toDataURL();
+    }
+
+    useEffect(() => {
+        paintImage(LogoRef2.current!, "#ffffff")
+        paintImage(LogoRef1.current!, "#ffffff")
+    }, [])
+
 
     //adjusting fonts
     const handlefontOptimization = useCallback(() => {
@@ -166,8 +226,9 @@ const BMpostGenerator = ({ shouldDim, setShouldDim }) => {
                                 className='aspect-auto absolute left-1/2 -translate-x-1/2  right-1 h-full w-auto z-[1] '
                             ></Image>
 
-                            {/** qr code section */}
+                            {/** Logo */}
                             <Image
+                                ref={LogoRef1}
                                 unoptimized
                                 width={80}
                                 height={80}
@@ -178,18 +239,14 @@ const BMpostGenerator = ({ shouldDim, setShouldDim }) => {
                                 className='z-[5] aspect-auto absolute left-1/2 -bottom-[3%] -translate-x-1/2 flex flex-col items-center justify-center w-[15%]'
                             ></Image>
 
-
-                            <div
-                                style={{
-                                    fontSize: `var(--complementary-bm-font-size)`,
-                                    lineHeight: `calc(var(--complementary-bm-font-size)*1)`,
-                                    backgroundColor: FillColor,
-                                }}
-                                className={`rounded-sm text-black flex items-center justify-center absolute text-center 
-                                    font-extrabold top-0 [text-shadow:none] left-0 w-[100%] h-[100%] mix-blend-difference  z-[4] `
-                                    + duncap.className}>
-                                Bm
-                            </div>
+                            <Image
+                                unoptimized
+                                src={BmFillSource}
+                                width={400}
+                                height={400}
+                                alt={`Bm Fill ${FillColor}`}
+                                className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[105%] h-[105%] z-[4]'
+                            />
 
                         </div>
 
@@ -238,7 +295,7 @@ const BMpostGenerator = ({ shouldDim, setShouldDim }) => {
                                     }}
                                     onClick={() => { setFillColor('#000000') }}
 
-                                    className='w-[15%] cursor-pointer aspect-[16/9] bg-black rounded-sm transition-all hover:scale-[1.15] active:scale-95 duration-500'></div>
+                                    className='w-[15%] max-sm:w-[7.5%] cursor-pointer aspect-[16/9] bg-black rounded-sm transition-all hover:scale-[1.15] active:scale-95 duration-500'></div>
                                 <div
                                     style={{
                                         transform: FillColor == '#ffffff' ? ('scale(1.15)') : ('1'),
@@ -246,7 +303,7 @@ const BMpostGenerator = ({ shouldDim, setShouldDim }) => {
                                     }}
                                     onClick={() => { setFillColor('#ffffff') }}
 
-                                    className='w-[15%] cursor-pointer aspect-[16/9] bg-white rounded-sm transition-all hover:scale-[1.15] active:scale-95 duration-500'></div>
+                                    className='w-[15%] max-sm:w-[7.5%] cursor-pointer aspect-[16/9] bg-white rounded-sm transition-all hover:scale-[1.15] active:scale-95 duration-500'></div>
                                 <div
                                     style={{
                                         transform: FillColor == '#ffd400' ? ('scale(1.15)') : ('1'),
@@ -254,7 +311,7 @@ const BMpostGenerator = ({ shouldDim, setShouldDim }) => {
                                     }}
                                     onClick={() => { setFillColor('#ffd400') }}
 
-                                    className='w-[15%] cursor-pointer aspect-[16/9] bg-[#ffd400] rounded-sm transition-all hover:scale-[1.15] active:scale-95 duration-500'></div>
+                                    className='w-[15%] max-sm:w-[7.5%] cursor-pointer aspect-[16/9] bg-[#ffd400] rounded-sm transition-all hover:scale-[1.15] active:scale-95 duration-500'></div>
                                 <div
                                     style={{
                                         transform: FillColor == '#ff4f8f' ? ('scale(1.15)') : ('1'),
@@ -262,7 +319,7 @@ const BMpostGenerator = ({ shouldDim, setShouldDim }) => {
                                     }}
                                     onClick={() => { setFillColor('#ff4f8f') }}
 
-                                    className='w-[15%] cursor-pointer aspect-[16/9] bg-[#ff4f8f] rounded-sm transition-all hover:scale-[1.15] active:scale-95 duration-500'></div>
+                                    className='w-[15%] max-sm:w-[7.5%] cursor-pointer aspect-[16/9] bg-[#ff4f8f] rounded-sm transition-all hover:scale-[1.15] active:scale-95 duration-500'></div>
                                 <div
                                     style={{
                                         transform: FillColor == '#fff6ee' ? ('scale(1.15)') : ('1'),
@@ -270,7 +327,7 @@ const BMpostGenerator = ({ shouldDim, setShouldDim }) => {
                                     }}
                                     onClick={() => { setFillColor('#fff6ee') }}
 
-                                    className='w-[15%] cursor-pointer aspect-[16/9] bg-[#fff6ee] rounded-sm transition-all hover:scale-[1.15] active:scale-95 duration-500'></div>
+                                    className='w-[15%] max-sm:w-[7.5%] cursor-pointer aspect-[16/9] bg-[#fff6ee] rounded-sm transition-all hover:scale-[1.15] active:scale-95 duration-500'></div>
                             </div>
 
 
@@ -282,44 +339,42 @@ const BMpostGenerator = ({ shouldDim, setShouldDim }) => {
                                         transform: LogoColor == '#000000' ? ('scale(1.15)') : ('1'),
                                         boxShadow: LogoColor == '#000000' ? ('0px 0px 5px 1px #ffd400') : ('none'),
                                     }}
-                                    onClick={() => { setLogoColor('#000000') }}
+                                    onClick={() => { paintImage(LogoRef1.current!, '#000000'); paintImage(LogoRef2.current!, '#000000'); setLogoColor('#000000') }}
 
-                                    className='w-[15%] cursor-pointer aspect-[16/9] bg-black rounded-sm transition-all hover:scale-[1.15] active:scale-95 duration-500'></div>
+                                    className='w-[15%] max-sm:w-[7.5%] cursor-pointer aspect-[16/9] bg-black rounded-sm transition-all hover:scale-[1.15] active:scale-95 duration-500'></div>
                                 <div
                                     style={{
                                         transform: LogoColor == '#ffffff' ? ('scale(1.15)') : ('1'),
                                         boxShadow: LogoColor == '#ffffff' ? ('0px 0px 5px 1px #ffd400') : ('none'),
                                     }}
-                                    onClick={() => { setLogoColor('#ffffff') }}
+                                    onClick={() => { paintImage(LogoRef1.current!, '#ffffff'); paintImage(LogoRef2.current!, '#ffffff'); setLogoColor('#ffffff') }}
 
-                                    className='w-[15%] cursor-pointer aspect-[16/9] bg-white rounded-sm transition-all hover:scale-[1.15] active:scale-95 duration-500'></div>
+                                    className='w-[15%] max-sm:w-[7.5%] cursor-pointer aspect-[16/9] bg-white rounded-sm transition-all hover:scale-[1.15] active:scale-95 duration-500'></div>
                                 <div
                                     style={{
                                         transform: LogoColor == '#ffd400' ? ('scale(1.15)') : ('1'),
                                         boxShadow: LogoColor == '#ffd400' ? ('0px 0px 5px 1px #ffd400') : ('none'),
                                     }}
-                                    onClick={() => { setLogoColor('#ffd400') }}
+                                    onClick={() => { paintImage(LogoRef1.current!, '#ffd400'); paintImage(LogoRef2.current!, '#ffd400'); setLogoColor('#ffd400') }}
 
-                                    className='w-[15%] cursor-pointer aspect-[16/9] bg-[#ffd400] rounded-sm transition-all hover:scale-[1.15] active:scale-95 duration-500'></div>
+                                    className='w-[15%] max-sm:w-[7.5%] cursor-pointer aspect-[16/9] bg-[#ffd400] rounded-sm transition-all hover:scale-[1.15] active:scale-95 duration-500'></div>
                                 <div
                                     style={{
                                         transform: LogoColor == '#ff4f8f' ? ('scale(1.15)') : ('1'),
                                         boxShadow: LogoColor == '#ff4f8f' ? ('0px 0px 5px 1px #ffd400') : ('none'),
                                     }}
-                                    onClick={() => { setLogoColor('#ff4f8f') }}
+                                    onClick={() => { paintImage(LogoRef1.current!, '#ff4f8f'); paintImage(LogoRef2.current!, '#ff4f8f'); setLogoColor('#ff4f8f') }}
 
-                                    className='w-[15%] cursor-pointer aspect-[16/9] bg-[#ff4f8f] rounded-sm transition-all hover:scale-[1.15] active:scale-95 duration-500'></div>
+                                    className='w-[15%] max-sm:w-[7.5%] cursor-pointer aspect-[16/9] bg-[#ff4f8f] rounded-sm transition-all hover:scale-[1.15] active:scale-95 duration-500'></div>
                                 <div
                                     style={{
                                         transform: LogoColor == '#fff6ee' ? ('scale(1.15)') : ('1'),
                                         boxShadow: LogoColor == '#fff6ee' ? ('0px 0px 5px 1px #ffd400') : ('none'),
                                     }}
-                                    onClick={() => { setLogoColor('#fff6ee') }}
+                                    onClick={() => { paintImage(LogoRef1.current!, '#fff6ee'); paintImage(LogoRef2.current!, '#fff6ee'); setLogoColor('#fff6ee') }}
 
-                                    className='w-[15%] cursor-pointer aspect-[16/9] bg-[#fff6ee] rounded-sm transition-all hover:scale-[1.15] active:scale-95 duration-500'></div>
+                                    className='w-[15%] max-sm:w-[7.5%] cursor-pointer aspect-[16/9] bg-[#fff6ee] rounded-sm transition-all hover:scale-[1.15] active:scale-95 duration-500'></div>
                             </div>
-
-
 
 
                             {/** export and save button */}
@@ -333,6 +388,65 @@ const BMpostGenerator = ({ shouldDim, setShouldDim }) => {
                 </div>
 
             </div>
+
+
+
+
+
+
+
+            {/** hidden banner */}
+
+            {/**banner */}
+            <div
+                style={{ background: topLeftPixelColor, }}
+                className='hidden-banner3 hidden relative !w-[1080px] min-w-[1080px] max-w-[1080px] rounded-xl aspect-[16/10] overflow-hidden '>
+
+                {/**nft image on the banner */}
+                {topLeftPixelColor == 'rgba(255, 229, 46, 1)' && (
+                    <Image
+                        unoptimized
+                        width={400}
+                        height={400}
+                        alt={ChoosenNFTnumber}
+                        src={'/assets/bubble-top-layer.webp'}
+                        className='aspect-auto absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-auto z-[2] '
+                    />)}
+                <Image
+                    onLoad={getColorOfTopLeftPixel}
+                    ref={imgRef}
+                    unoptimized
+                    width={400}
+                    height={400}
+                    alt={NFTimageSrc}
+                    src={'/assets/NFTS/' + (NFTimageSrc ? NFTimageSrc.substring(1, NFTimageSrc.length) : '1') + '.png'}
+                    className='aspect-auto absolute left-1/2 -translate-x-1/2  right-1 h-full w-auto z-[1] '
+                ></Image>
+
+                {/** Logo */}
+                <Image
+                    ref={LogoRef2}
+                    unoptimized
+                    width={80}
+                    height={80}
+                    alt={NFTimageSrc}
+                    src={'/assets/Logo.png'}
+                    priority
+                    loading='eager'
+                    className='z-[5] aspect-auto absolute left-1/2 -bottom-[3%] -translate-x-1/2 flex flex-col items-center justify-center w-[15%]'
+                ></Image>
+
+                <Image
+                    unoptimized
+                    src={BmFillSource}
+                    width={1000}
+                    height={1000}
+                    alt={`Bm Fill ${FillColor}`}
+                    className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[105%] h-[105%] z-[4]'
+                />
+
+            </div>
+
         </>
     )
 }
