@@ -34,6 +34,7 @@ export function generateMetadata(
       absolute: `${PROJECT_BASE_TITLE} | Home`
     },
     description: PROJECT_DESCRIPTION,
+    metadataBase: new URL(baseUrl),
     abstract: PROJECT_DESCRIPTION,
     classification: 'art generator',
     robots: { index: true, follow: true },
