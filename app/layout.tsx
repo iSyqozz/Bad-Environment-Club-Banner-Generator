@@ -22,7 +22,7 @@ import { Viewport } from 'next'
 //for vercel deployments
 const baseUrl = process.env.NODE_ENV === 'development'
   ? `http://localhost:${process.env.PORT || 3000}` :
-  'https://' + process.env.VERCEL_URL as string;
+  'https://creative.badenvironment.club';
 
 export function generateMetadata(
 ): Metadata {
