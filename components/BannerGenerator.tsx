@@ -186,7 +186,7 @@ const BannerGenerator = ({ shouldDim, setShouldDim }) => {
                                     className='h-[100%] w-auto z-[1]'
                                 ></Image>
                             </div>
-                            <div className='text-black text-center [text-shadow:none] max-sm:text-[5px] text-[9px]'>{`Use code ${ReferralCode || '(your code)'} to get a 10% discount`}</div>
+                            <div className='text-black text-center [text-shadow:none] max-sm:text-[5px] text-[9px] font-bold'>{`Discount Code ${ReferralCode || 'XXXX'}`}</div>
                         </div>
                     )}
                 </div>
@@ -349,7 +349,7 @@ const BannerGenerator = ({ shouldDim, setShouldDim }) => {
                                 className='h-[100%] w-auto z-[1] !mix-blend-multiply'
                             ></Image>
                         </div>
-                        <div className='mb-2 text-black text-center [text-shadow:none] text-[9px]'>{`Use code ${ReferralCode || '(your code)'} to get a 10% discount`}</div>
+                        <div className='mb-2 text-black text-center [text-shadow:none] font-bold text-[16px]'>{`Discount Code ${ReferralCode || 'XXXX'}`}</div>
                     </div>
                 )}
             </div>
