@@ -292,7 +292,7 @@ const BannerGenerator = ({ shouldDim, setShouldDim }) => {
                     onClick={() => {
                         setShouldDim(true); setTimeout(() => { captureAndSaveBanner() }, 10);
                     }}
-                    className='max-md:mb-auto max-sm:w-[calc(75%)] md:my-6  w-[calc(50%+8px)] bg-black transition-all duration-300 hover:scale-105 active:scale-95 text-center font-light text-white text-lg rounded-sm p-2'>
+                    className={'max-md:my-auto max-sm:w-[calc(75%)] md:my-6  w-[calc(50%+8px)] bg-black transition-all duration-300 scale-105 text-center max-sm:text-sm font-light text-white text-lg rounded-sm p-2 ' + myFont.className}>
                     EXPORT AND SAVE
                 </div>
             </div>

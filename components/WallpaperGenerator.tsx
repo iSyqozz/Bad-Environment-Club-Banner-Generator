@@ -270,7 +270,7 @@ const WallpaperGenerator = ({ shouldDim, setShouldDim }) => {
 
                             {/** export and save button */}
                             <div onClick={() => { setShouldDim(true); setTimeout(() => { captureAndSaveBanner() }, 10); }}
-                                className='max-sm:w-[85%] max-sm:mt-2 sm:my-6  w-[100%] bg-black transition-all duration-300 hover:scale-105 active:scale-95 text-center font-light text-white text-lg rounded-sm p-2'>
+                                className={'max-sm:w-[85%] max-sm:mt-2 sm:my-6  w-[100%] bg-black transition-all duration-300 scale-105 text-center font-light text-white text-lg max-sm:text-sm rounded-sm p-2 ' + myFont.className}>
                                 EXPORT AND SAVE
                             </div>
                         </div>

@@ -127,7 +127,7 @@ export default function RootLayout({
           <video src='/assets/space.mp4' muted autoPlay loop playsInline className='w-full h-full object-cover -z-5'></video>
         </div>
 
-        {/** <ParticlesBg/> */} 
+         <ParticlesBg/>
 
 
         <ScrollProg></ScrollProg>
